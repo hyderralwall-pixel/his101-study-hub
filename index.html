@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>HIS 101 — Study Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --sage-0:#f0faf0;--sage-1:#dcf0dc;--sage-2:#b8ddb8;--sage-3:#8ec98e;
+  --sage-4:#64b464;--sage-5:#3d9a3d;--sage-6:#2a7a2a;--sage-7:#1a5c1a;
+  --sage-8:#0e3d0e;--cream:#f7fbf2;--ink:#1a2e1a;--mid:#3a5c3a;
+  --muted:#6b8f6b;--gold:#c8a84b;--rose:#fce4ec;--radius:14px;
+  --shadow:0 4px 24px rgba(30,80,30,.10);--shadow-lg:0 8px 40px rgba(30,80,30,.15);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;z-index:-1;
+  background:radial-gradient(ellipse 80% 60% at 10% 0%,#c8e6c840 0%,transparent 60%),
+  radial-gradient(ellipse 60% 80% at 90% 100%,#a5d6a730 0%,transparent 60%);}
+
+/* ── NAV ── */
+nav{background:var(--sage-7);display:flex;align-items:center;gap:0;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.2);}
+.nav-brand{font-family:'Playfair Display',serif;color:white;font-size:.95rem;font-weight:700;padding:.75rem 1.2rem;border-right:1px solid rgba(255,255,255,.1);white-space:nowrap;}
+.nav-brand em{font-style:italic;color:var(--sage-3);}
+.nav-links{display:flex;overflow-x:auto;flex:1;}
+.nav-links::-webkit-scrollbar{display:none;}
+.nav-btn{background:none;border:none;color:rgba(255,255,255,.7);font-family:'DM Sans',sans-serif;font-size:.82rem;padding:.75rem 1rem;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:color .15s,border-color .15s;}
+.nav-btn:hover{color:white;}
+.nav-btn.active{color:white;border-bottom-color:var(--sage-3);}
+
+/* ── PAGES ── */
+.page{display:none;max-width:1040px;margin:0 auto;padding:2rem 1.5rem 5rem;}
+.page.active{display:block;}
+
+/* ── HEADER BANNER ── */
+.page-banner{background:linear-gradient(135deg,var(--sage-7),var(--sage-5));color:white;padding:2rem;border-radius:var(--radius);margin-bottom:2rem;position:relative;overflow:hidden;}
+.page-banner::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(255,255,255,.02) 20px,rgba(255,255,255,.02) 21px);}
+.page-banner h1{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3vw,2rem);margin-bottom:.3rem;}
+.page-banner p{font-size:.88rem;opacity:.8;}
+
+/* ── SECTION LABEL ── */
+.section-label{font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:1.2rem;display:flex;align-items:center;gap:.75rem;}
+.section-label::after{content:'';flex:1;height:1px;background:var(--sage-2);}
+
+/* ── CARDS ── */
+.card{background:white;border-radius:var(--radius);border:1.5px solid var(--sage-1);box-shadow:var(--shadow);padding:1.3rem;}
+.card h4{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--sage-7);margin-bottom:.75rem;}
+
+/* ── GRID LAYOUTS ── */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;}
+@media(max-width:700px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}}
+@media(max-width:900px){.grid-4{grid-template-columns:1fr 1fr;}}
+
+/* ── INFO ROW ── */
+.info-row{display:flex;justify-content:space-between;align-items:baseline;padding:.3rem 0;border-bottom:1px dashed var(--sage-1);font-size:.83rem;}
+.info-row:last-child{border-bottom:none;}
+.info-row .k{color:var(--muted);}
+.info-row .v{font-weight:600;color:var(--ink);text-align:right;}
+
+/* ── COUNTDOWN ── */
+.countdown-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem;}
+@media(max-width:600px){.countdown-grid{grid-template-columns:1fr;}}
+.countdown-card{background:white;border-radius:var(--radius);border:1.5px solid var(--sage-1);box-shadow:var(--shadow);padding:1.2rem;text-align:center;}
+.countdown-card .event-name{font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem;}
+.countdown-card .days{font-family:'Playfair Display',serif;font-size:2.6rem;font-weight:700;color:var(--sage-6);line-height:1;}
+.countdown-card .days-label{font-size:.75rem;color:var(--muted);margin-top:.2rem;}
+.countdown-card .event-date{font-size:.78rem;color:var(--mid);margin-top:.4rem;font-family:'DM Mono',monospace;}
+.countdown-card.urgent .days{color:#c62828;}
+.countdown-card.soon .days{color:var(--gold);}
+
+/* ── STAT CARDS ── */
+.stat-card{background:white;border-radius:var(--radius);border:1.5px solid var(--sage-1);box-shadow:var(--shadow);padding:1rem;text-align:center;}
+.stat-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--sage-6);}
+.stat-label{font-size:.78rem;color:var(--muted);margin-top:.2rem;}
+
+/* ── CHAPTER FLIP CARDS ── */
+.chapters-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin-bottom:2rem;}
+.flip-card{height:160px;perspective:1000px;cursor:pointer;}
+.flip-card-inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d;}
+.flip-card.flipped .flip-card-inner{transform:rotateY(180deg);}
+.flip-front,.flip-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius);border:1.5px solid var(--sage-1);box-shadow:var(--shadow);padding:1rem;display:flex;flex-direction:column;}
+.flip-front{background:white;justify-content:space-between;}
+.flip-back{background:linear-gradient(135deg,var(--sage-7),var(--sage-6));color:white;transform:rotateY(180deg);justify-content:center;align-items:center;gap:.5rem;}
+.flip-front-top{display:flex;align-items:flex-start;gap:.6rem;}
+.ch-num{background:var(--sage-6);color:white;font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ch-title{font-family:'Playfair Display',serif;font-size:.88rem;font-weight:600;color:var(--ink);line-height:1.3;}
+.ch-week{font-size:.7rem;color:var(--muted);font-family:'DM Mono',monospace;margin-top:.2rem;}
+.flip-front-bottom{display:flex;gap:.3rem;flex-wrap:wrap;}
+.resource-pip{width:20px;height:20px;border-radius:5px;font-size:.65rem;display:flex;align-items:center;justify-content:center;opacity:.35;}
+.resource-pip.active{opacity:1;}
+.resource-pip.audio{background:#e8f5e9;}
+.resource-pip.slides{background:#e3f2fd;}
+.resource-pip.flash{background:#fff8e1;}
+.resource-pip.notes{background:#f3e5f5;}
+.resource-pip.source{background:#fce4ec;}
+.resource-pip.summary{background:#e0f7fa;}
+.flip-back .open-btn{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);color:white;padding:.4rem 1rem;border-radius:100px;font-size:.82rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .15s;}
+.flip-back .open-btn:hover{background:rgba(255,255,255,.3);}
+.flip-back .ch-back-title{font-family:'Playfair Display',serif;font-size:1rem;text-align:center;}
+.flip-back .ch-back-reading{font-size:.75rem;opacity:.8;font-family:'DM Mono',monospace;text-align:center;}
+.flip-back .ch-progress{font-size:.78rem;opacity:.9;margin-top:.2rem;}
+.flip-card:hover .flip-front{border-color:var(--sage-3);}
+
+/* ── CHAPTER DRAWER (modal) ── */
+.drawer-overlay{position:fixed;inset:0;background:rgba(10,30,10,.5);z-index:200;display:flex;align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto;backdrop-filter:blur(3px);}
+.drawer-overlay.hidden{display:none;}
+.drawer{background:var(--cream);border-radius:var(--radius);width:100%;max-width:780px;box-shadow:0 20px 60px rgba(0,0,0,.3);overflow:hidden;}
+.drawer-header{background:linear-gradient(135deg,var(--sage-7),var(--sage-6));color:white;padding:1.3rem 1.5rem;display:flex;align-items:center;gap:1rem;}
+.drawer-header h2{font-family:'Playfair Display',serif;font-size:1.2rem;flex:1;}
+.drawer-header .close-btn{background:rgba(255,255,255,.15);border:none;color:white;width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;}
+.drawer-header .close-btn:hover{background:rgba(255,255,255,.25);}
+.drawer-tabs{display:flex;background:var(--sage-8);overflow-x:auto;}
+.drawer-tabs::-webkit-scrollbar{display:none;}
+.drawer-tab{background:none;border:none;color:rgba(255,255,255,.6);padding:.65rem 1rem;font-size:.8rem;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;border-bottom:2px solid transparent;transition:color .15s,border-color .15s;}
+.drawer-tab:hover{color:white;}
+.drawer-tab.active{color:white;border-bottom-color:var(--sage-3);}
+.drawer-body{padding:1.5rem;}
+.drawer-panel{display:none;}
+.drawer-panel.active{display:block;}
+
+/* ── RESOURCE ROWS (drawer) ── */
+.res-row{display:flex;align-items:center;gap:.75rem;padding:.65rem 0;border-bottom:1px dashed var(--sage-1);}
+.res-row:last-child{border-bottom:none;}
+.res-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.res-icon.audio{background:#e8f5e9;}
+.res-icon.slides{background:#e3f2fd;}
+.res-icon.flash{background:#fff8e1;}
+.res-icon.notes{background:#f3e5f5;}
+.res-icon.source{background:#fce4ec;}
+.res-icon.summary{background:#e0f7fa;}
+.res-label{flex:1;color:var(--mid);font-weight:500;font-size:.87rem;}
+.res-label small{display:block;color:var(--muted);font-size:.74rem;font-weight:400;}
+
+/* ── BUTTONS ── */
+.upload-btn{background:var(--sage-0);border:1.5px dashed var(--sage-3);border-radius:8px;padding:.32rem .75rem;font-size:.78rem;color:var(--sage-6);font-weight:500;cursor:pointer;white-space:nowrap;transition:background .15s,border-color .15s;font-family:'DM Sans',sans-serif;}
+.upload-btn:hover{background:var(--sage-1);border-color:var(--sage-5);}
+.upload-btn input[type=file]{display:none;}
+.upload-btn.has-file{background:var(--sage-1);border-style:solid;border-color:var(--sage-5);color:var(--sage-7);}
+.link-wrap{display:flex;gap:.4rem;align-items:center;flex:1;}
+.link-input{border:1px solid var(--sage-2);border-radius:7px;padding:.3rem .65rem;font-size:.78rem;color:var(--ink);background:var(--sage-0);font-family:'DM Sans',sans-serif;flex:1;min-width:0;outline:none;transition:border-color .15s;}
+.link-input:focus{border-color:var(--sage-5);background:white;}
+.link-input::placeholder{color:var(--muted);}
+.link-input.has-link{border-color:var(--sage-4);background:white;}
+.go-btn{background:var(--sage-5);color:white;border:none;border-radius:7px;padding:.3rem .65rem;cursor:pointer;font-size:.8rem;font-family:'DM Sans',sans-serif;transition:background .15s;flex-shrink:0;}
+.go-btn:hover{background:var(--sage-6);}
+.btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--sage-5);color:white;border:none;border-radius:8px;padding:.5rem 1rem;font-size:.85rem;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;transition:background .15s;}
+.btn:hover{background:var(--sage-6);}
+.btn.secondary{background:var(--sage-1);color:var(--sage-7);}
+.btn.secondary:hover{background:var(--sage-2);}
+.btn.danger{background:#fce4ec;color:#c62828;}
+.btn.danger:hover{background:#ffcdd2;}
+
+/* ── AUDIO ── */
+.audio-player-wrap{display:none;margin-top:.6rem;}
+.audio-player-wrap audio{width:100%;border-radius:8px;}
+.audio-filename{font-size:.74rem;color:var(--muted);margin-bottom:.3rem;}
+.audio-note{font-size:.72rem;color:var(--muted);font-style:italic;padding:.25rem .5rem;background:var(--sage-0);border-radius:6px;margin-top:.3rem;display:none;}
+
+/* ── FLASHCARDS (drawer) ── */
+.fc-panel .fc-box{background:linear-gradient(135deg,var(--sage-0),white);border:1.5px solid var(--sage-2);border-radius:12px;padding:1.5rem;text-align:center;cursor:pointer;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;transition:transform .2s;position:relative;margin-bottom:.75rem;}
+.fc-panel .fc-box:hover{transform:scale(1.01);}
+.fc-panel .fc-front{font-weight:600;color:var(--ink);font-size:1rem;}
+.fc-panel .fc-back{display:none;color:var(--mid);font-size:.9rem;}
+.fc-panel .fc-box.flipped .fc-front{display:none;}
+.fc-panel .fc-box.flipped .fc-back{display:block;}
+.fc-panel .fc-tag{position:absolute;top:.5rem;right:.7rem;font-size:.65rem;color:var(--muted);font-family:'DM Mono',monospace;text-transform:uppercase;}
+.fc-nav{display:flex;gap:.5rem;justify-content:center;align-items:center;margin-bottom:1rem;}
+.fc-counter{font-size:.8rem;color:var(--muted);font-family:'DM Mono',monospace;}
+.add-card-form{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.75rem;padding-top:.75rem;border-top:1px dashed var(--sage-1);}
+.add-card-form input{flex:1;min-width:120px;border:1px solid var(--sage-2);border-radius:7px;padding:.35rem .65rem;font-size:.82rem;font-family:'DM Sans',sans-serif;background:var(--sage-0);outline:none;}
+.add-card-form input:focus{border-color:var(--sage-5);background:white;}
+
+/* ── TEXT AREAS (notes/summary) ── */
+.study-textarea{width:100%;border:1px solid var(--sage-2);border-radius:10px;padding:.85rem;font-size:.85rem;font-family:'DM Sans',sans-serif;color:var(--ink);background:var(--sage-0);resize:vertical;min-height:160px;outline:none;line-height:1.6;}
+.study-textarea:focus{border-color:var(--sage-5);background:white;}
+.char-count{font-size:.72rem;color:var(--muted);text-align:right;margin-top:.25rem;font-family:'DM Mono',monospace;}
+
+/* ── FILE UPLOAD ZONE ── */
+.upload-zone{border:2px dashed var(--sage-2);border-radius:12px;padding:2rem;text-align:center;cursor:pointer;transition:background .15s,border-color .15s;background:var(--sage-0);}
+.upload-zone:hover{background:var(--sage-1);border-color:var(--sage-4);}
+.upload-zone .uz-icon{font-size:2rem;margin-bottom:.5rem;}
+.upload-zone p{font-size:.85rem;color:var(--muted);}
+.upload-zone p strong{color:var(--sage-6);}
+.uploaded-file{display:flex;align-items:center;gap:.75rem;padding:.75rem;background:var(--sage-0);border:1px solid var(--sage-2);border-radius:10px;margin-top:.75rem;}
+.uploaded-file .file-icon{font-size:1.3rem;}
+.uploaded-file .file-info{flex:1;}
+.uploaded-file .file-name{font-size:.85rem;font-weight:600;color:var(--ink);}
+.uploaded-file .file-size{font-size:.75rem;color:var(--muted);}
+
+/* ── CHECKLIST ── */
+.checklist-item{display:flex;align-items:center;gap:.75rem;padding:.5rem 0;border-bottom:1px dashed var(--sage-1);}
+.checklist-item:last-child{border-bottom:none;}
+.checklist-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--sage-5);cursor:pointer;flex-shrink:0;}
+.checklist-item label{font-size:.87rem;color:var(--ink);cursor:pointer;flex:1;}
+.checklist-item input:checked+label{text-decoration:line-through;color:var(--muted);}
+
+/* ── PROGRESS BAR ── */
+.progress-bar-wrap{background:var(--sage-1);border-radius:100px;height:10px;overflow:hidden;margin:.5rem 0;}
+.progress-bar-fill{background:linear-gradient(90deg,var(--sage-4),var(--sage-5));height:100%;border-radius:100px;transition:width .4s ease;}
+
+/* ── PROGRESS PAGE ── */
+.progress-week{margin-bottom:1.5rem;}
+.progress-week h3{font-family:'Playfair Display',serif;font-size:1rem;color:var(--sage-7);margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem;}
+.progress-chapter-row{display:flex;align-items:center;gap:.75rem;padding:.5rem .75rem;background:white;border:1px solid var(--sage-1);border-radius:10px;margin-bottom:.4rem;}
+.progress-chapter-row .pch-num{background:var(--sage-6);color:white;font-family:'Playfair Display',serif;font-size:.8rem;font-weight:700;width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.progress-chapter-row .pch-title{flex:1;font-size:.85rem;font-weight:500;}
+.progress-checks{display:flex;gap:.3rem;}
+.pcheck{width:24px;height:24px;border-radius:6px;border:1.5px solid var(--sage-2);display:flex;align-items:center;justify-content:center;font-size:.65rem;cursor:pointer;transition:background .15s,border-color .15s;position:relative;}
+.pcheck:hover{border-color:var(--sage-4);}
+.pcheck.done{background:var(--sage-5);border-color:var(--sage-5);color:white;}
+.pcheck-label{position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);background:var(--sage-8);color:white;font-size:.65rem;padding:.15rem .4rem;border-radius:4px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s;}
+.pcheck:hover .pcheck-label{opacity:1;}
+
+/* ── FULLSCREEN FLASHCARD MODE ── */
+.fs-overlay{position:fixed;inset:0;background:var(--sage-8);z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;}
+.fs-overlay.hidden{display:none;}
+.fs-header{position:absolute;top:1.2rem;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;}
+.fs-title{color:var(--sage-2);font-family:'Playfair Display',serif;font-size:1rem;}
+.fs-close{background:rgba(255,255,255,.1);border:none;color:white;padding:.4rem .9rem;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.85rem;}
+.fs-card{background:white;border-radius:20px;width:100%;max-width:600px;min-height:260px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2.5rem;cursor:pointer;box-shadow:0 20px 60px rgba(0,0,0,.4);transition:transform .2s;position:relative;}
+.fs-card:hover{transform:scale(1.01);}
+.fs-card-label{position:absolute;top:1rem;right:1.2rem;font-size:.7rem;color:var(--muted);font-family:'DM Mono',monospace;text-transform:uppercase;}
+.fs-card-ch{position:absolute;top:1rem;left:1.2rem;font-size:.7rem;color:var(--muted);font-family:'DM Mono',monospace;}
+.fs-front{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--ink);text-align:center;font-weight:600;}
+.fs-back{display:none;font-size:1.1rem;color:var(--mid);text-align:center;line-height:1.6;}
+.fs-card.flipped .fs-front{display:none;}
+.fs-card.flipped .fs-back{display:block;}
+.fs-nav{display:flex;gap:1rem;margin-top:1.5rem;align-items:center;}
+.fs-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:white;padding:.55rem 1.4rem;border-radius:10px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.9rem;transition:background .15s;}
+.fs-btn:hover{background:rgba(255,255,255,.2);}
+.fs-counter{color:rgba(255,255,255,.6);font-family:'DM Mono',monospace;font-size:.85rem;min-width:60px;text-align:center;}
+.fs-progress{width:100%;max-width:600px;margin-top:1rem;}
+.fs-select-area{display:flex;flex-direction:column;align-items:center;gap:1rem;width:100%;max-width:500px;}
+.fs-select-area h2{font-family:'Playfair Display',serif;color:white;font-size:1.3rem;}
+.fs-select-area p{color:var(--sage-2);font-size:.88rem;text-align:center;}
+.fs-chapter-picks{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;max-height:200px;overflow-y:auto;}
+.fs-ch-pick{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);padding:.3rem .7rem;border-radius:100px;font-size:.78rem;cursor:pointer;transition:background .15s,color .15s;}
+.fs-ch-pick.selected{background:var(--sage-5);border-color:var(--sage-4);color:white;}
+.fs-hint{color:rgba(255,255,255,.4);font-size:.78rem;font-family:'DM Mono',monospace;text-align:center;margin-top:.75rem;}
+
+/* ── MY NOTES PAGE ── */
+.notes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;}
+.note-card{background:white;border-radius:var(--radius);border:1.5px solid var(--sage-1);box-shadow:var(--shadow);overflow:hidden;transition:transform .2s,box-shadow .2s;}
+.note-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);}
+.note-card-header{padding:.85rem 1rem;border-bottom:1px solid var(--sage-1);display:flex;align-items:center;gap:.6rem;}
+.note-card-num{background:var(--sage-6);color:white;font-family:'Playfair Display',serif;font-size:.85rem;font-weight:700;width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.note-card-title{font-family:'Playfair Display',serif;font-size:.9rem;font-weight:600;color:var(--ink);}
+.note-card-body{padding:.85rem 1rem;}
+.note-type-badge{display:inline-flex;align-items:center;gap:.3rem;font-size:.72rem;padding:.2rem .5rem;border-radius:100px;font-family:'DM Mono',monospace;}
+.note-type-badge.pdf{background:#f3e5f5;color:#6a1b9a;}
+.note-type-badge.summary{background:#e0f7fa;color:#006064;}
+.note-type-badge.source{background:#fce4ec;color:#880e4f;}
+.note-card-preview{font-size:.82rem;color:var(--muted);margin-top:.4rem;line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.note-actions{display:flex;gap:.4rem;margin-top:.75rem;}
+
+/* ── EXAM PREP ── */
+.exam-toggle{display:flex;background:var(--sage-1);border-radius:10px;padding:.25rem;gap:.25rem;margin-bottom:1.5rem;width:fit-content;}
+.exam-toggle-btn{background:none;border:none;padding:.4rem 1.1rem;border-radius:8px;font-size:.85rem;cursor:pointer;font-family:'DM Sans',sans-serif;color:var(--mid);transition:background .15s,color .15s;}
+.exam-toggle-btn.active{background:white;color:var(--sage-7);font-weight:600;box-shadow:var(--shadow);}
+.exam-section{display:none;}
+.exam-section.active{display:block;}
+.essay-q{background:white;border:1.5px solid var(--sage-1);border-radius:12px;padding:1rem 1.2rem;margin-bottom:.75rem;display:flex;align-items:flex-start;gap:.75rem;}
+.essay-q-num{background:var(--sage-5);color:white;font-family:'Playfair Display',serif;font-weight:700;width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.85rem;}
+.essay-q-text{flex:1;font-size:.87rem;color:var(--ink);line-height:1.5;}
+.essay-q-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.9rem;padding:.1rem;}
+.essay-q-del:hover{color:#c62828;}
+.add-essay-form{display:flex;gap:.5rem;margin-top:1rem;}
+.add-essay-form input{flex:1;border:1px solid var(--sage-2);border-radius:8px;padding:.4rem .75rem;font-size:.85rem;font-family:'DM Sans',sans-serif;background:var(--sage-0);outline:none;}
+.add-essay-form input:focus{border-color:var(--sage-5);background:white;}
+.timeline-item{display:flex;gap:1rem;padding:.75rem 0;border-bottom:1px dashed var(--sage-1);}
+.timeline-item:last-child{border-bottom:none;}
+.timeline-date{font-family:'DM Mono',monospace;font-size:.78rem;color:var(--sage-6);font-weight:500;min-width:90px;padding-top:.1rem;}
+.timeline-content{font-size:.85rem;color:var(--ink);line-height:1.5;}
+
+/* ── TOAST ── */
+#save-toast{position:fixed;bottom:1.5rem;right:1.5rem;z-index:999;background:var(--sage-7);color:white;padding:.55rem 1rem;border-radius:100px;font-size:.78rem;font-family:'DM Mono',monospace;opacity:0;transform:translateY(8px);transition:opacity .3s,transform .3s;pointer-events:none;}
+#save-toast.show{opacity:1;transform:translateY(0);}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.flip-card{animation:fadeUp .35s ease both;}
+
+/* ── RESPONSIVE NAV ── */
+@media(max-width:600px){.nav-brand{font-size:.8rem;padding:.65rem .8rem;}.nav-btn{font-size:.75rem;padding:.65rem .7rem;}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">HIS 101 <em>Study Hub</em></div>
+  <div class="nav-links">
+    <button class="nav-btn active" onclick="showPage('home')">🏠 Home</button>
+    <button class="nav-btn" onclick="showPage('chapters')">📚 Chapters</button>
+    <button class="nav-btn" onclick="showPage('flashcards')">🃏 Flashcards</button>
+    <button class="nav-btn" onclick="showPage('notes')">📄 My Notes</button>
+    <button class="nav-btn" onclick="showPage('exam')">📝 Exam Prep</button>
+    <button class="nav-btn" onclick="showPage('progress')">✅ Progress</button>
+  </div>
+</nav>
+
+<div id="save-toast">✓ Saved</div>
+
+<!-- ═══════════════════════════════════════════════════════ HOME PAGE -->
+<div class="page active" id="page-home">
+  <div style="padding:2rem 1.5rem 5rem;max-width:1040px;margin:0 auto;">
+    <div class="page-banner">
+      <h1>History of Western Civilization</h1>
+      <p>Pre-1600 CE &nbsp;·&nbsp; Prof. Genna Swartz &nbsp;·&nbsp; Section O01P &nbsp;·&nbsp; Summer 2026</p>
+    </div>
+
+    <p class="section-label">Upcoming Deadlines</p>
+    <div class="countdown-grid" id="countdownGrid"></div>
+
+    <p class="section-label">Quick Stats</p>
+    <div class="grid-4" id="statsGrid" style="margin-bottom:2rem;"></div>
+
+    <p class="section-label">Course Info</p>
+    <div class="grid-2" style="margin-bottom:2rem;">
+      <div class="card">
+        <h4>💯 Grade Breakdown</h4>
+        <div class="info-row"><span class="k">Assignments</span><span class="v">45%</span></div>
+        <div class="info-row"><span class="k">Quizzes</span><span class="v">15%</span></div>
+        <div class="info-row"><span class="k">Midterm Exam</span><span class="v">15%</span></div>
+        <div class="info-row"><span class="k">Final Exam</span><span class="v">15%</span></div>
+        <div class="info-row"><span class="k">Source Analysis Paper</span><span class="v">10%</span></div>
+      </div>
+      <div class="card">
+        <h4>📋 Key Policies</h4>
+        <div class="info-row"><span class="k">Late penalty</span><span class="v">–10% / day</span></div>
+        <div class="info-row"><span class="k">Tuition refund deadline</span><span class="v">May 26, 2026</span></div>
+        <div class="info-row"><span class="k">Withdraw (no penalty)</span><span class="v">June 18, 2026</span></div>
+        <div class="info-row"><span class="k">AI use</span><span class="v">🚫 Prohibited</span></div>
+        <div class="info-row"><span class="k">Grading scale</span><span class="v">A≥90 B≥80 C≥70</span></div>
+        <div class="info-row"><span class="k">Contact</span><span class="v">Canvas Inbox</span></div>
+      </div>
+    </div>
+
+    <p class="section-label">Weekly Schedule</p>
+    <div class="card" style="margin-bottom:2rem;">
+      <div id="weekSchedule"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ CHAPTERS PAGE -->
+<div class="page" id="page-chapters">
+  <div style="padding:2rem 1.5rem 5rem;max-width:1040px;margin:0 auto;">
+    <div class="page-banner">
+      <h1>📚 Chapter Hub</h1>
+      <p>Click a card to flip · Click "Open Chapter" to add resources</p>
+    </div>
+    <div class="chapters-grid" id="chaptersGrid"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ FLASHCARDS PAGE -->
+<div class="page" id="page-flashcards">
+  <div style="padding:2rem 1.5rem 5rem;max-width:1040px;margin:0 auto;">
+    <div class="page-banner">
+      <h1>🃏 Flashcard Study Mode</h1>
+      <p>Select chapters to study · Space to flip · Arrow keys to navigate</p>
+    </div>
+    <div id="fs-setup" class="card" style="text-align:center;padding:2rem;">
+      <p style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--sage-7);margin-bottom:1rem;">Choose chapters to study</p>
+      <p style="font-size:.85rem;color:var(--muted);margin-bottom:1.2rem;">Only chapters with flashcards are shown</p>
+      <div id="fs-chapter-picks" style="display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;margin-bottom:1.2rem;"></div>
+      <div style="display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;">
+        <button class="btn secondary" onclick="fsSelectAll()">Select All</button>
+        <button class="btn secondary" onclick="fsClearAll()">Clear All</button>
+        <button class="btn" onclick="startFullscreen()">▶ Start Study Session</button>
+      </div>
+      <p id="fs-card-count" style="font-size:.8rem;color:var(--muted);margin-top:.75rem;font-family:'DM Mono',monospace;"></p>
+    </div>
+    <div id="fs-stats" style="margin-top:1.5rem;display:none;">
+      <p class="section-label">All Flashcards by Chapter</p>
+      <div id="fs-all-cards"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ MY NOTES PAGE -->
+<div class="page" id="page-notes">
+  <div style="padding:2rem 1.5rem 5rem;max-width:1040px;margin:0 auto;">
+    <div class="page-banner">
+      <h1>📄 My Notes</h1>
+      <p>All your uploaded chapter notes, summaries, and primary source notes in one place</p>
+    </div>
+    <div style="margin-bottom:1.5rem;display:flex;gap:.5rem;flex-wrap:wrap;">
+      <button class="btn secondary" id="notes-filter-all" onclick="filterNotes('all')" style="border:1.5px solid var(--sage-3);">All</button>
+      <button class="btn secondary" onclick="filterNotes('pdf')">📄 PDFs</button>
+      <button class="btn secondary" onclick="filterNotes('summary')">✍️ Summaries</button>
+      <button class="btn secondary" onclick="filterNotes('source')">🔍 Primary Sources</button>
+    </div>
+    <div class="notes-grid" id="notesGrid"></div>
+    <p id="notes-empty" style="text-align:center;color:var(--muted);padding:3rem;font-size:.9rem;display:none;">No notes yet — open a chapter and start adding! 🌿</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ EXAM PREP PAGE -->
+<div class="page" id="page-exam">
+  <div style="padding:2rem 1.5rem 5rem;max-width:1040px;margin:0 auto;">
+    <div class="page-banner">
+      <h1>📝 Exam Prep</h1>
+      <p>Essay questions · Key concepts · Course timeline</p>
+    </div>
+
+    <div class="exam-toggle">
+      <button class="exam-toggle-btn active" onclick="switchExam('midterm',this)">Midterm (Week 3)</button>
+      <button class="exam-toggle-btn" onclick="switchExam('final',this)">Final Exam (Week 7)</button>
+      <button class="exam-toggle-btn" onclick="switchExam('timeline',this)">Timeline</button>
+    </div>
+
+    <!-- Midterm -->
+    <div class="exam-section active" id="exam-midterm">
+      <div class="grid-2" style="margin-bottom:1.5rem;">
+        <div class="card">
+          <h4>📅 Midterm Details</h4>
+          <div class="info-row"><span class="k">When</span><span class="v">End of Week 3</span></div>
+          <div class="info-row"><span class="k">Covers</span><span class="v">Ch. 1–11 (Wks 1–3)</span></div>
+          <div class="info-row"><span class="k">Format</span><span class="v">Map ID + MC + Essay</span></div>
+          <div class="info-row"><span class="k">Time limit</span><span class="v">2 hours</span></div>
+          <div class="info-row"><span class="k">Notes allowed</span><span class="v">1 page (both sides)</span></div>
+          <div class="info-row"><span class="k">Browser</span><span class="v">Respondus LockDown</span></div>
+        </div>
+        <div class="card">
+          <h4>🗺️ Map Regions to Know</h4>
+          <div class="checklist-item"><input type="checkbox" id="map1" onchange="saveCheckbox('map1',this.checked)"><label for="map1">Mesopotamia (Tigris & Euphrates)</label></div>
+          <div class="checklist-item"><input type="checkbox" id="map2" onchange="saveCheckbox('map2',this.checked)"><label for="map2">Egypt (Nile, Upper/Lower)</label></div>
+          <div class="checklist-item"><input type="checkbox" id="map3" onchange="saveCheckbox('map3',this.checked)"><label for="map3">Ancient Greece (Athens, Sparta, Macedon)</label></div>
+          <div class="checklist-item"><input type="checkbox" id="map4" onchange="saveCheckbox('map4',this.checked)"><label for="map4">Roman Empire at its height</label></div>
+          <div class="checklist-item"><input type="checkbox" id="map5" onchange="saveCheckbox('map5',this.checked)"><label for="map5">Byzantine Empire</label></div>
+          <div class="checklist-item"><input type="checkbox" id="map6" onchange="saveCheckbox('map6',this.checked)"><label for="map6">Persian Empire</label></div>
+        </div>
+      </div>
+      <p class="section-label">Essay / Discussion Questions — Midterm</p>
+      <div id="essay-list-midterm"></div>
+      <div class="add-essay-form">
+        <input type="text" id="essay-input-midterm" placeholder="Add a potential essay question..."/>
+        <button class="btn" onclick="addEssayQ('midterm')">+ Add</button>
+      </div>
+    </div>
+
+    <!-- Final -->
+    <div class="exam-section" id="exam-final">
+      <div class="grid-2" style="margin-bottom:1.5rem;">
+        <div class="card">
+          <h4>📅 Final Exam Details</h4>
+          <div class="info-row"><span class="k">When</span><span class="v">Week 7 (by July 10)</span></div>
+          <div class="info-row"><span class="k">Covers</span><span class="v">Midterm → end of course</span></div>
+          <div class="info-row"><span class="k">Format</span><span class="v">Map ID + MC + Essay</span></div>
+          <div class="info-row"><span class="k">Time limit</span><span class="v">2 hours</span></div>
+          <div class="info-row"><span class="k">Notes allowed</span><span class="v">1 page (both sides)</span></div>
+          <div class="info-row"><span class="k">Source Analysis Paper</span><span class="v">Also due Week 7</span></div>
+        </div>
+        <div class="card">
+          <h4>📄 Source Analysis Paper Checklist</h4>
+          <div class="checklist-item"><input type="checkbox" id="sap1" onchange="saveCheckbox('sap1',this.checked)"><label for="sap1">Primary source chosen & approved</label></div>
+          <div class="checklist-item"><input type="checkbox" id="sap2" onchange="saveCheckbox('sap2',this.checked)"><label for="sap2">Source Analysis Proposal submitted</label></div>
+          <div class="checklist-item"><input type="checkbox" id="sap3" onchange="saveCheckbox('sap3',this.checked)"><label for="sap3">Secondary sources researched (JSTOR)</label></div>
+          <div class="checklist-item"><input type="checkbox" id="sap4" onchange="saveCheckbox('sap4',this.checked)"><label for="sap4">Chicago Style citations set up</label></div>
+          <div class="checklist-item"><input type="checkbox" id="sap5" onchange="saveCheckbox('sap5',this.checked)"><label for="sap5">4-page minimum draft complete</label></div>
+          <div class="checklist-item"><input type="checkbox" id="sap6" onchange="saveCheckbox('sap6',this.checked)"><label for="sap6">Writing Center review done</label></div>
+          <div class="checklist-item"><input type="checkbox" id="sap7" onchange="saveCheckbox('sap7',this.checked)"><label for="sap7">Paper submitted on Canvas</label></div>
+        </div>
+      </div>
+      <p class="section-label">Essay / Discussion Questions — Final</p>
+      <div id="essay-list-final"></div>
+      <div class="add-essay-form">
+        <input type="text" id="essay-input-final" placeholder="Add a potential essay question..."/>
+        <button class="btn" onclick="addEssayQ('final')">+ Add</button>
+      </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="exam-section" id="exam-timeline">
+      <div class="card">
+        <h4>📅 Key Historical Timeline</h4>
+        <div id="timeline-list"></div>
+        <div class="add-essay-form" style="margin-top:1rem;padding-top:1rem;border-top:1px dashed var(--sage-1);">
+          <input type="text" id="timeline-date-input" placeholder="Date (e.g. 753 BCE)" style="max-width:140px;"/>
+          <input type="text" id="timeline-event-input" placeholder="Event"/>
+          <button class="btn" onclick="addTimelineEvent()">+ Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ PROGRESS PAGE -->
+<div class="page" id="page-progress">
+  <div style="padding:2rem 1.5rem 5rem;max-width:1040px;margin:0 auto;">
+    <div class="page-banner">
+      <h1>✅ Progress Tracker</h1>
+      <p>Track what you've read, uploaded, and studied for each chapter</p>
+    </div>
+    <div class="grid-4" style="margin-bottom:2rem;" id="progress-stats"></div>
+    <div style="margin-bottom:2rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
+        <span style="font-size:.85rem;font-weight:600;color:var(--sage-7);">Overall Completion</span>
+        <span id="overall-pct" style="font-family:'DM Mono',monospace;font-size:.82rem;color:var(--muted);"></span>
+      </div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" id="overall-bar" style="width:0%"></div></div>
+    </div>
+    <div id="progressWeeks"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ CHAPTER DRAWER -->
+<div class="drawer-overlay hidden" id="drawerOverlay" onclick="closeDrawer(event)">
+  <div class="drawer" id="drawer">
+    <div class="drawer-header">
+      <div class="ch-num" id="drawer-num" style="background:var(--sage-6);color:white;width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;flex-shrink:0;"></div>
+      <h2 id="drawer-title">Chapter</h2>
+      <button class="close-btn" onclick="closeDrawerBtn()">✕</button>
+    </div>
+    <div class="drawer-tabs" id="drawerTabs"></div>
+    <div class="drawer-body" id="drawerBody"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ FULLSCREEN FLASHCARDS -->
+<div class="fs-overlay hidden" id="fsOverlay">
+  <div class="fs-header">
+    <span class="fs-title" id="fs-session-title">Study Session</span>
+    <button class="fs-close" onclick="closeFullscreen()">✕ Exit</button>
+  </div>
+  <div class="fs-progress">
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="fs-bar" style="width:0%"></div></div>
+  </div>
+  <div class="fs-card" id="fsCard" onclick="fsFlip()">
+    <span class="fs-card-label">click to flip</span>
+    <span class="fs-card-ch" id="fs-card-ch"></span>
+    <div class="fs-front" id="fs-front">—</div>
+    <div class="fs-back" id="fs-back">—</div>
+  </div>
+  <div class="fs-nav">
+    <button class="fs-btn" onclick="fsPrev()">◀ Prev</button>
+    <span class="fs-counter" id="fs-counter">0 / 0</span>
+    <button class="fs-btn" onclick="fsNext()">▶ Next</button>
+  </div>
+  <div class="fs-hint" id="fs-hint">Space = flip · ← → = navigate · Esc = exit</div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════
+// DATA
+// ════════════════════════════════════════════════════════════
+const CHAPTERS = [
+  {num:1,  title:"The Ancient Near East",            week:"Week 1",reading:"Brooks Vol. 1, Ch. 1"},
+  {num:2,  title:"Early Civilizations",              week:"Week 1",reading:"Brooks Vol. 1, Ch. 2"},
+  {num:3,  title:"The Ancient Near East (cont.)",    week:"Week 1",reading:"Brooks Vol. 1, Ch. 3"},
+  {num:4,  title:"Ancient Greece",                   week:"Week 2",reading:"Brooks Vol. 1, Ch. 4"},
+  {num:5,  title:"Classical Greece",                 week:"Week 2",reading:"Brooks Vol. 1, Ch. 5"},
+  {num:6,  title:"Alexander & the Hellenistic World",week:"Week 2",reading:"Brooks Vol. 1, Ch. 6"},
+  {num:7,  title:"Ancient Rome I",                   week:"Week 3",reading:"Brooks Vol. 1, Ch. 8"},
+  {num:8,  title:"Ancient Rome II",                  week:"Week 3",reading:"Brooks Vol. 1, Ch. 9"},
+  {num:9,  title:"Ancient Rome III",                 week:"Week 3",reading:"Brooks Vol. 1, Ch. 10"},
+  {num:10, title:"Ancient Rome IV",                  week:"Week 3",reading:"Brooks Vol. 1, Ch. 11"},
+  {num:11, title:"The Byzantine Empire",             week:"Week 4",reading:"Brooks Vol. 1, Ch. 12"},
+  {num:12, title:"Islam & Early Middle Ages",        week:"Week 4",reading:"Brooks Vol. 1, Ch. 13"},
+  {num:13, title:"High Middle Ages",                 week:"Week 5",reading:"Brooks Vol. 2, Ch. 1"},
+  {num:14, title:"Late Middle Ages",                 week:"Week 5",reading:"Brooks Vol. 2, Ch. 2"},
+  {num:15, title:"The Renaissance",                  week:"Week 6",reading:"Brooks Vol. 2, Ch. 3 & 4"},
+  {num:16, title:"The Reformation",                  week:"Week 6",reading:"Brooks Vol. 2, Ch. 6 & 7"},
+  {num:17, title:"Age of Exploration",               week:"Week 7",reading:"Brooks Vol. 2, Ch. 5"},
+];
+
+const WEEKS = [
+  {label:"Week 1",chs:[1,2,3],topic:"Ancient Near East",due:"Sun May 24"},
+  {label:"Week 2",chs:[4,5,6],topic:"Ancient Greece",due:"Sun May 31"},
+  {label:"Week 3",chs:[7,8,9,10],topic:"Ancient Rome + MIDTERM",due:"Sun Jun 7"},
+  {label:"Week 4",chs:[11,12],topic:"Byzantine & Early Middle Ages",due:"Sun Jun 14"},
+  {label:"Week 5",chs:[13,14],topic:"High & Late Middle Ages",due:"Sun Jun 21"},
+  {label:"Week 6",chs:[15,16],topic:"Renaissance & Reformation",due:"Sun Jun 28"},
+  {label:"Week 7",chs:[17],topic:"Age of Exploration + FINAL + SOURCE PAPER",due:"Thu Jul 10"},
+];
+
+const DEADLINES = [
+  {name:"Midterm Exam",date:"2026-06-07",color:"soon"},
+  {name:"Source Analysis Paper",date:"2026-07-10",color:""},
+  {name:"Final Exam",date:"2026-07-10",color:""},
+  {name:"Withdraw Deadline",date:"2026-06-18",color:"urgent"},
+];
+
+const DEFAULT_TIMELINE = [
+  {date:"~3500 BCE",event:"Writing invented in Sumer (Mesopotamia)"},
+  {date:"~3100 BCE",event:"Egypt unified under Narmer/Menes"},
+  {date:"~2560 BCE",event:"Great Pyramid of Giza built"},
+  {date:"~509 BCE",event:"Roman Republic founded"},
+  {date:"490 BCE",event:"Battle of Marathon — Greeks defeat Persians"},
+  {date:"431 BCE",event:"Peloponnesian War begins (Athens vs. Sparta)"},
+  {date:"336 BCE",event:"Alexander the Great begins reign"},
+  {date:"264 BCE",event:"First Punic War — Rome vs. Carthage"},
+  {date:"27 BCE",event:"Augustus — Roman Empire begins"},
+  {date:"313 CE",event:"Edict of Milan — Christianity legalized"},
+  {date:"476 CE",event:"Fall of Western Roman Empire"},
+  {date:"527 CE",event:"Justinian I rules Byzantine Empire"},
+  {date:"622 CE",event:"Muhammad's Hijra — Islam spreads"},
+  {date:"1066 CE",event:"Norman Conquest of England"},
+  {date:"1095 CE",event:"First Crusade called by Pope Urban II"},
+  {date:"1347 CE",event:"Black Death arrives in Europe"},
+  {date:"1440s CE",event:"Gutenberg's printing press"},
+  {date:"1517 CE",event:"Luther's 95 Theses — Reformation begins"},
+  {date:"1492 CE",event:"Columbus reaches the Americas"},
+];
+
+const DEFAULT_ESSAYS_MIDTERM = [
+  "How did geography shape the development of Egyptian vs. Mesopotamian civilization differently?",
+  "Analyze the role of religion in the political structure of at least two ancient societies.",
+  "Compare the Athenian and Spartan models of governance. What were the key strengths and weaknesses of each?",
+  "What factors led to the fall of the Roman Republic and the rise of the Empire?",
+];
+const DEFAULT_ESSAYS_FINAL = [
+  "How did the Byzantine Empire preserve and transmit classical knowledge to the medieval West?",
+  "Analyze the causes and consequences of the Black Death on European society.",
+  "Compare the Lutheran and Calvinist Reformations. How did they differ in theology and political impact?",
+  "How did the Age of Exploration change the relationship between Europe and the rest of the world?",
+];
+
+// ════════════════════════════════════════════════════════════
+// STATE + LOCALSTORAGE
+// ════════════════════════════════════════════════════════════
+const STORE_KEY = 'his101_v3';
+
+function loadState(){
+  try{ const r=localStorage.getItem(STORE_KEY); return r?JSON.parse(r):{}; }
+  catch(e){ return {}; }
+}
+function saveState(){
+  const toSave={chapters:{},checkboxes:state.checkboxes,essays:state.essays,timeline:state.timeline};
+  CHAPTERS.forEach(ch=>{
+    const s=state.chapters[ch.num];
+    toSave.chapters[ch.num]={
+      audioLink:s.audioLink||'',
+      slidesURL:s.slidesURL||'',
+      notesLink:s.notesLink||'',
+      handwrittenLink:s.handwrittenLink||'',
+      flashcards:s.flashcards||[],
+      fcIndex:s.fcIndex||0,
+      summary:s.summary||'',
+      sourceNotes:s.sourceNotes||'',
+      progress:s.progress||{},
+    };
+  });
+  localStorage.setItem(STORE_KEY,JSON.stringify(toSave));
+  showToast();
+}
+
+const raw=loadState();
+const state={
+  checkboxes:raw.checkboxes||{},
+  essays:raw.essays||{midterm:[...DEFAULT_ESSAYS_MIDTERM],final:[...DEFAULT_ESSAYS_FINAL]},
+  timeline:raw.timeline||[...DEFAULT_TIMELINE],
+  chapters:{},
+  drawerNum:null,
+  drawerTab:0,
+  fsCards:[],
+  fsIndex:0,
+  fsSelected:new Set(),
+};
+CHAPTERS.forEach(ch=>{
+  const s=(raw.chapters||{})[ch.num]||{};
+  state.chapters[ch.num]={
+    audioLink:s.audioLink||'',
+    slidesURL:s.slidesURL||'',
+    notesLink:s.notesLink||'',
+    handwrittenLink:s.handwrittenLink||'',
+    flashcards:s.flashcards||[],
+    fcIndex:s.fcIndex||0,
+    summary:s.summary||'',
+    sourceNotes:s.sourceNotes||'',
+    progress:s.progress||{},
+  };
+});
+
+let toastTimer;
+function showToast(){
+  const t=document.getElementById('save-toast');
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),1800);
+}
+function escH(s){return(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+// ════════════════════════════════════════════════════════════
+// NAVIGATION
+// ════════════════════════════════════════════════════════════
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b=>{
+    if(b.textContent.toLowerCase().includes(id)||
+       (id==='home'&&b.textContent.includes('Home'))||
+       (id==='chapters'&&b.textContent.includes('Chapter'))||
+       (id==='flashcards'&&b.textContent.includes('Flash'))||
+       (id==='notes'&&b.textContent.includes('Notes'))||
+       (id==='exam'&&b.textContent.includes('Exam'))||
+       (id==='progress'&&b.textContent.includes('Progress')))
+      b.classList.add('active');
+  });
+  if(id==='notes')renderNotesPage();
+  if(id==='flashcards')renderFlashcardsPage();
+  if(id==='progress')renderProgressPage();
+  window.scrollTo(0,0);
+}
+
+// ════════════════════════════════════════════════════════════
+// HOME PAGE
+// ════════════════════════════════════════════════════════════
+function renderHome(){
+  // Countdowns
+  const grid=document.getElementById('countdownGrid');
+  grid.innerHTML='';
+  const now=new Date();
+  DEADLINES.forEach(d=>{
+    const target=new Date(d.date);
+    const diff=Math.ceil((target-now)/(1000*60*60*24));
+    const card=document.createElement('div');
+    card.className='countdown-card'+(diff<=3?' urgent':diff<=7?' soon':'');
+    card.innerHTML=`<div class="event-name">${d.name}</div>
+      <div class="days">${diff>0?diff:'Past'}</div>
+      <div class="days-label">${diff>0?'days remaining':'deadline passed'}</div>
+      <div class="event-date">${d.date}</div>`;
+    grid.appendChild(card);
+  });
+
+  // Stats
+  const sg=document.getElementById('statsGrid');
+  let totalCards=0,notesUploaded=0,summaries=0,progressDone=0,progressTotal=0;
+  CHAPTERS.forEach(ch=>{
+    const s=state.chapters[ch.num];
+    totalCards+=s.flashcards.length;
+    if(s.notesName)notesUploaded++;
+    if(s.summary)summaries++;
+    const pkeys=['read','notes','flash','quiz','audio'];
+    pkeys.forEach(k=>{progressTotal++;if(s.progress[k])progressDone++;});
+  });
+  sg.innerHTML=`
+    <div class="stat-card"><div class="stat-num">${totalCards}</div><div class="stat-label">Flashcards Created</div></div>
+    <div class="stat-card"><div class="stat-num">${notesUploaded}</div><div class="stat-label">Notes Uploaded</div></div>
+    <div class="stat-card"><div class="stat-num">${summaries}</div><div class="stat-label">Summaries Written</div></div>
+    <div class="stat-card"><div class="stat-num">${Math.round(progressDone/progressTotal*100)||0}%</div><div class="stat-label">Overall Progress</div></div>`;
+
+  // Weekly schedule
+  const ws=document.getElementById('weekSchedule');
+  ws.innerHTML=WEEKS.map(w=>`
+    <div style="display:flex;align-items:center;gap:1rem;padding:.6rem 0;border-bottom:1px dashed var(--sage-1);">
+      <span style="font-family:'DM Mono',monospace;font-size:.78rem;color:var(--sage-6);min-width:55px;">${w.label}</span>
+      <span style="flex:1;font-size:.85rem;color:var(--ink);">${w.topic}</span>
+      <span style="font-size:.75rem;color:var(--muted);font-family:'DM Mono',monospace;">${w.due}</span>
+    </div>`).join('');
+}
+
+// ════════════════════════════════════════════════════════════
+// CHAPTER FLIP CARDS
+// ════════════════════════════════════════════════════════════
+function renderChapters(){
+  const grid=document.getElementById('chaptersGrid');
+  grid.innerHTML='';
+  CHAPTERS.forEach((ch,i)=>{
+    const s=state.chapters[ch.num];
+    const card=document.createElement('div');
+    card.className='flip-card';
+    card.style.animationDelay=(i*.04)+'s';
+    card.id='fc-outer-'+ch.num;
+    card.onclick=()=>flipChapterCard(ch.num);
+    const pips=[
+      {cls:'audio',icon:'🎧',active:!!s.audioLink},
+      {cls:'slides',icon:'📊',active:!!s.slidesURL},
+      {cls:'flash',icon:'🃏',active:s.flashcards.length>0},
+      {cls:'notes',icon:'📄',active:!!(s.notesLink||s.handwrittenLink)},
+      {cls:'source',icon:'🔍',active:!!s.sourceNotes},
+      {cls:'summary',icon:'✍️',active:!!s.summary},
+    ];
+    const pipsHTML=pips.map(p=>`<div class="resource-pip ${p.cls}${p.active?' active':''}" title="${p.cls}">${p.icon}</div>`).join('');
+    const done=Object.values(s.progress).filter(Boolean).length;
+    const total=5;
+    card.innerHTML=`
+      <div class="flip-card-inner">
+        <div class="flip-front">
+          <div class="flip-front-top">
+            <div class="ch-num">${ch.num}</div>
+            <div><div class="ch-title">${ch.title}</div><div class="ch-week">${ch.week} · ${ch.reading}</div></div>
+          </div>
+          <div class="flip-front-bottom">${pipsHTML}</div>
+        </div>
+        <div class="flip-back">
+          <div class="ch-back-title">${ch.title}</div>
+          <div class="ch-back-reading">${ch.reading}</div>
+          <div class="ch-progress">${done}/${total} tasks done</div>
+          <button class="open-btn" onclick="event.stopPropagation();openDrawer(${ch.num})">Open Chapter →</button>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function flipChapterCard(num){
+  document.getElementById('fc-outer-'+num).classList.toggle('flipped');
+}
+
+// ════════════════════════════════════════════════════════════
+// CHAPTER DRAWER
+// ════════════════════════════════════════════════════════════
+function openDrawer(num){
+  const ch=CHAPTERS.find(c=>c.num===num);
+  const s=state.chapters[num];
+  state.drawerNum=num;
+  document.getElementById('drawer-num').textContent=num;
+  document.getElementById('drawer-title').textContent=ch.title+' — '+ch.reading;
+
+  const tabs=[
+    {label:'🎧 Audio',  fn:()=>renderDrawerAudio(num)},
+    {label:'📊 Slides', fn:()=>renderDrawerSlides(num)},
+    {label:'🃏 Flashcards',fn:()=>renderDrawerFlash(num)},
+    {label:'📄 Notes',  fn:()=>renderDrawerNotes(num)},
+    {label:'🔍 Primary Source',fn:()=>renderDrawerSource(num)},
+    {label:'✍️ Summary',fn:()=>renderDrawerSummary(num)},
+    {label:'✅ Progress',fn:()=>renderDrawerProgress(num)},
+  ];
+  const tabsEl=document.getElementById('drawerTabs');
+  tabsEl.innerHTML=tabs.map((t,i)=>`<button class="drawer-tab${i===0?' active':''}" onclick="switchDrawerTab(${i})">${t.label}</button>`).join('');
+  state.drawerTabs=tabs;
+  state.drawerTabIdx=0;
+  tabs[0].fn();
+  document.getElementById('drawerOverlay').classList.remove('hidden');
+  document.body.style.overflow='hidden';
+}
+
+function switchDrawerTab(i){
+  document.querySelectorAll('.drawer-tab').forEach((t,j)=>t.classList.toggle('active',i===j));
+  state.drawerTabIdx=i;
+  state.drawerTabs[i].fn();
+}
+
+function closeDrawer(e){
+  if(e.target===document.getElementById('drawerOverlay'))closeDrawerBtn();
+}
+function closeDrawerBtn(){
+  document.getElementById('drawerOverlay').classList.add('hidden');
+  document.body.style.overflow='';
+  renderChapters(); // refresh pips
+  renderHome();
+}
+
+// ── Audio Panel ──
+function renderDrawerAudio(num){
+  const s=state.chapters[num];
+  document.getElementById('drawerBody').innerHTML=`
+    <p style="font-size:.85rem;color:var(--muted);margin-bottom:1rem;">
+      Paste a Google Drive link to your audio file. It saves permanently and opens with one click every time.
+    </p>
+    <div class="res-row">
+      <div class="res-icon audio">🎧</div>
+      <span class="res-label">Audio Overview<small>Google Drive link to your .mp3 / .m4a</small></span>
+    </div>
+    <div style="display:flex;gap:.5rem;margin-top:.5rem;">
+      <input class="link-input${s.audioLink?' has-link':''}" id="audio-link-${num}" type="url"
+        placeholder="https://drive.google.com/file/d/..." value="${escH(s.audioLink||'')}"
+        oninput="state.chapters[${num}].audioLink=this.value;if(this.value)this.classList.add('has-link');else this.classList.remove('has-link');saveState();"/>
+      <button class="go-btn" onclick="openDriveLink(${num},'audioLink')">Open →</button>
+    </div>
+    ${s.audioLink?`<div style="margin-top:.75rem;padding:.6rem .8rem;background:var(--sage-1);border-radius:8px;font-size:.8rem;color:var(--sage-7);display:flex;align-items:center;gap:.5rem;">✓ Audio link saved — click Open to play in Google Drive</div>`:''}
+    <div style="margin-top:1rem;padding:.85rem;background:var(--sage-0);border:1px dashed var(--sage-2);border-radius:10px;font-size:.8rem;color:var(--muted);line-height:1.7;">
+      <strong style="color:var(--sage-7);">How to get your Google Drive link:</strong><br/>
+      1. Upload your audio to Google Drive<br/>
+      2. Right-click the file → <em>Share</em> → <em>Anyone with the link</em><br/>
+      3. Click <em>Copy link</em> and paste it above
+    </div>`;
+}
+
+// ── Slides Panel ──
+function renderDrawerSlides(num){
+  const s=state.chapters[num];
+  document.getElementById('drawerBody').innerHTML=`
+    <p style="font-size:.85rem;color:var(--muted);margin-bottom:1rem;">Paste your Google Slides or Canvas lecture slides link. Saves permanently.</p>
+    <div class="res-row">
+      <div class="res-icon slides">📊</div>
+      <span class="res-label">Slide Deck<small>Google Slides or Canvas link</small></span>
+    </div>
+    <div style="display:flex;gap:.5rem;margin-top:.5rem;">
+      <input class="link-input${s.slidesURL?' has-link':''}" id="slides-link-${num}" type="url"
+        placeholder="https://docs.google.com/presentation/..." value="${escH(s.slidesURL)}"
+        oninput="state.chapters[${num}].slidesURL=this.value;if(this.value)this.classList.add('has-link');else this.classList.remove('has-link');saveState();"/>
+      <button class="go-btn" onclick="openDriveLink(${num},'slidesURL')">Open →</button>
+    </div>
+    ${s.slidesURL?`<div style="margin-top:.75rem;padding:.6rem .8rem;background:var(--sage-1);border-radius:8px;font-size:.8rem;color:var(--sage-7);">✓ Slide deck link saved</div>`:''}`;
+}
+
+function openDriveLink(num,key){
+  const url=state.chapters[num][key];
+  if(url)window.open(url,'_blank');
+  else alert('Paste a Google Drive link first!');
+}
+function openIfSet(num,key){ openDriveLink(num,key); }
+
+// ── Flashcards Panel ──
+function renderDrawerFlash(num){
+  const s=state.chapters[num];
+  const cards=s.flashcards;
+  const idx=Math.min(s.fcIndex,cards.length-1);
+  document.getElementById('drawerBody').innerHTML=`
+    <div class="fc-panel">
+      ${cards.length?`
+        <div class="fc-box${s._flipped?' flipped':''}" id="dfc-box" onclick="dfcFlip(${num})">
+          <span class="fc-tag">click to flip</span>
+          <div class="fc-front" id="dfc-front">${escH(cards[idx].term)}</div>
+          <div class="fc-back"  id="dfc-back">${escH(cards[idx].def)}</div>
+        </div>
+        <div class="fc-nav">
+          <button class="btn secondary" onclick="dfcPrev(${num})">◀ Prev</button>
+          <span class="fc-counter" id="dfc-counter">${idx+1} / ${cards.length}</span>
+          <button class="btn secondary" onclick="dfcNext(${num})">Next ▶</button>
+          <button class="btn danger" onclick="dfcDelete(${num})">🗑</button>
+        </div>`:'<p style="color:var(--muted);font-size:.85rem;text-align:center;padding:1rem 0;">No flashcards yet — add your first one below!</p>'}
+      <div class="add-card-form">
+        <input type="text" placeholder="Term / Question" id="dfc-term-${num}"/>
+        <input type="text" placeholder="Definition / Answer" id="dfc-def-${num}"/>
+        <button class="btn" onclick="dfcAdd(${num})">+ Add Card</button>
+      </div>
+    </div>`;
+}
+
+function dfcFlip(num){document.getElementById('dfc-box').classList.toggle('flipped');}
+function dfcAdd(num){
+  const t=document.getElementById('dfc-term-'+num).value.trim();
+  const d=document.getElementById('dfc-def-'+num).value.trim();
+  if(!t||!d){alert('Fill in both fields!');return;}
+  state.chapters[num].flashcards.push({term:t,def:d});
+  state.chapters[num].fcIndex=state.chapters[num].flashcards.length-1;
+  saveState(); renderDrawerFlash(num);
+}
+function dfcDelete(num){
+  if(!confirm('Delete this card?'))return;
+  const s=state.chapters[num];
+  s.flashcards.splice(s.fcIndex,1);
+  s.fcIndex=Math.max(0,s.fcIndex-1);
+  saveState(); renderDrawerFlash(num);
+}
+function dfcNext(num){
+  const s=state.chapters[num];
+  s.fcIndex=(s.fcIndex+1)%s.flashcards.length;
+  saveState(); renderDrawerFlash(num);
+}
+function dfcPrev(num){
+  const s=state.chapters[num];
+  s.fcIndex=(s.fcIndex-1+s.flashcards.length)%s.flashcards.length;
+  saveState(); renderDrawerFlash(num);
+}
+
+// ── Notes Panel ──
+function renderDrawerNotes(num){
+  const s=state.chapters[num];
+  document.getElementById('drawerBody').innerHTML=`
+    <p style="font-size:.85rem;color:var(--muted);margin-bottom:1.2rem;">
+      Paste Google Drive links to your notes. Everything saves permanently — one click to open any time.
+    </p>
+
+    <div class="res-row">
+      <div class="res-icon notes">📄</div>
+      <span class="res-label">Chapter Notes (PDF / Doc)<small>Google Drive link</small></span>
+    </div>
+    <div style="display:flex;gap:.5rem;margin:.4rem 0 1rem;">
+      <input class="link-input${s.notesLink?' has-link':''}" id="notes-link-${num}" type="url"
+        placeholder="https://drive.google.com/file/d/..."
+        value="${escH(s.notesLink||'')}"
+        oninput="state.chapters[${num}].notesLink=this.value;if(this.value)this.classList.add('has-link');else this.classList.remove('has-link');saveState();"/>
+      <button class="go-btn" onclick="openDriveLink(${num},'notesLink')">Open →</button>
+    </div>
+
+    <div class="res-row">
+      <div class="res-icon notes" style="background:#e8f5e9;">📓</div>
+      <span class="res-label">Handwritten Notes Scan<small>Google Drive photo / scan link</small></span>
+    </div>
+    <div style="display:flex;gap:.5rem;margin:.4rem 0 1rem;">
+      <input class="link-input${s.handwrittenLink?' has-link':''}" id="handwritten-link-${num}" type="url"
+        placeholder="https://drive.google.com/file/d/..."
+        value="${escH(s.handwrittenLink||'')}"
+        oninput="state.chapters[${num}].handwrittenLink=this.value;if(this.value)this.classList.add('has-link');else this.classList.remove('has-link');saveState();"/>
+      <button class="go-btn" onclick="openDriveLink(${num},'handwrittenLink')">Open →</button>
+    </div>
+
+    <div class="res-row">
+      <div class="res-icon slides">📊</div>
+      <span class="res-label">Slide Deck / Lecture Slides<small>Google Slides or Canvas link</small></span>
+    </div>
+    <div style="display:flex;gap:.5rem;margin:.4rem 0 1rem;">
+      <input class="link-input${s.slidesURL?' has-link':''}" id="slides-link-inline-${num}" type="url"
+        placeholder="https://docs.google.com/presentation/..."
+        value="${escH(s.slidesURL||'')}"
+        oninput="state.chapters[${num}].slidesURL=this.value;if(this.value)this.classList.add('has-link');else this.classList.remove('has-link');saveState();"/>
+      <button class="go-btn" onclick="openDriveLink(${num},'slidesURL')">Open →</button>
+    </div>
+
+    <div style="padding:.85rem;background:var(--sage-0);border:1px dashed var(--sage-2);border-radius:10px;font-size:.8rem;color:var(--muted);line-height:1.7;margin-top:.5rem;">
+      <strong style="color:var(--sage-7);">How to get a Google Drive link:</strong><br/>
+      1. Upload your file to Google Drive (drive.google.com)<br/>
+      2. Right-click the file → <em>Share</em> → set to <em>Anyone with the link</em><br/>
+      3. Click <em>Copy link</em> and paste it above — saved forever ✓
+    </div>`;
+}
+function clearNotes(num){
+  state.chapters[num].notesLink=null;
+  saveState(); renderDrawerNotes(num);
+}
+
+// ── Primary Source Panel ──
+function renderDrawerSource(num){
+  const s=state.chapters[num];
+  document.getElementById('drawerBody').innerHTML=`
+    <p style="font-size:.85rem;color:var(--muted);margin-bottom:.75rem;">Use Prof. Swartz's framework: main idea → details → evidence → author/audience/bias → source type → historical significance.</p>
+    <textarea class="study-textarea" id="source-ta-${num}" placeholder="Primary source notes for this chapter..."
+      oninput="state.chapters[${num}].sourceNotes=this.value;autoSave()">${escH(s.sourceNotes)}</textarea>
+    <div class="char-count" id="source-cc-${num}">${(s.sourceNotes||'').length} characters</div>
+    <button class="btn" style="margin-top:.5rem;" onclick="saveTextArea(${num},'sourceNotes','source-ta-${num}')">💾 Save</button>`;
+  document.getElementById('source-ta-'+num).addEventListener('input',function(){
+    document.getElementById('source-cc-'+num).textContent=this.value.length+' characters';
+  });
+}
+
+// ── Summary Panel ──
+function renderDrawerSummary(num){
+  const s=state.chapters[num];
+  document.getElementById('drawerBody').innerHTML=`
+    <p style="font-size:.85rem;color:var(--muted);margin-bottom:.75rem;">Write your own chapter summary. This is your one-paragraph pre-exam reference.</p>
+    <textarea class="study-textarea" id="summary-ta-${num}" placeholder="Your summary of this chapter..."
+      oninput="state.chapters[${num}].summary=this.value;autoSave()">${escH(s.summary)}</textarea>
+    <div class="char-count" id="summary-cc-${num}">${(s.summary||'').length} characters</div>
+    <button class="btn" style="margin-top:.5rem;" onclick="saveTextArea(${num},'summary','summary-ta-${num}')">💾 Save</button>`;
+  document.getElementById('summary-ta-'+num).addEventListener('input',function(){
+    document.getElementById('summary-cc-'+num).textContent=this.value.length+' characters';
+  });
+}
+
+let autoSaveTimer;
+function autoSave(){clearTimeout(autoSaveTimer);autoSaveTimer=setTimeout(saveState,800);}
+function saveTextArea(num,key,elId){
+  state.chapters[num][key]=document.getElementById(elId).value;
+  saveState();
+}
+
+// ── Progress Panel ──
+function renderDrawerProgress(num){
+  const s=state.chapters[num];
+  const tasks=[
+    {key:'read',label:'Read the chapter'},
+    {key:'notes',label:'Notes uploaded or written'},
+    {key:'flash',label:'Flashcards added'},
+    {key:'quiz',label:'Canvas quiz completed'},
+    {key:'audio',label:'Listened to audio overview'},
+  ];
+  document.getElementById('drawerBody').innerHTML=`
+    <p style="font-size:.85rem;color:var(--muted);margin-bottom:.75rem;">Check off each task as you complete it.</p>
+    ${tasks.map(t=>`
+      <div class="checklist-item">
+        <input type="checkbox" id="dp-${num}-${t.key}" ${s.progress[t.key]?'checked':''}
+          onchange="toggleProgress(${num},'${t.key}',this.checked)"/>
+        <label for="dp-${num}-${t.key}">${t.label}</label>
+      </div>`).join('')}`;
+}
+
+function toggleProgress(num,key,val){
+  state.chapters[num].progress[key]=val;
+  saveState();
+}
+
+// ════════════════════════════════════════════════════════════
+// FLASHCARDS PAGE
+// ════════════════════════════════════════════════════════════
+function renderFlashcardsPage(){
+  const picks=document.getElementById('fs-chapter-picks');
+  picks.innerHTML='';
+  CHAPTERS.forEach(ch=>{
+    const count=state.chapters[ch.num].flashcards.length;
+    if(!count)return;
+    const btn=document.createElement('button');
+    btn.className='fs-ch-pick'+(state.fsSelected.has(ch.num)?' selected':'');
+    btn.textContent=`Ch. ${ch.num} (${count})`;
+    btn.onclick=()=>{
+      if(state.fsSelected.has(ch.num))state.fsSelected.delete(ch.num);
+      else state.fsSelected.add(ch.num);
+      renderFlashcardsPage();
+    };
+    picks.appendChild(btn);
+  });
+  updateFsCount();
+
+  // Show all cards preview
+  const all=document.getElementById('fs-all-cards');
+  let hasAny=false;
+  all.innerHTML='';
+  CHAPTERS.forEach(ch=>{
+    const cards=state.chapters[ch.num].flashcards;
+    if(!cards.length)return;
+    hasAny=true;
+    const sec=document.createElement('div');
+    sec.style.marginBottom='1rem';
+    sec.innerHTML=`<p class="section-label" style="margin-bottom:.5rem;">Chapter ${ch.num} — ${ch.title}</p>
+      ${cards.map(c=>`<div style="display:flex;gap:.75rem;padding:.4rem .75rem;background:white;border:1px solid var(--sage-1);border-radius:8px;margin-bottom:.3rem;font-size:.83rem;">
+        <span style="font-weight:600;color:var(--ink);flex:1;">${escH(c.term)}</span>
+        <span style="color:var(--muted);flex:1;">${escH(c.def)}</span>
+      </div>`).join('')}`;
+    all.appendChild(sec);
+  });
+  document.getElementById('fs-stats').style.display=hasAny?'block':'none';
+}
+
+function updateFsCount(){
+  let total=0;
+  state.fsSelected.forEach(num=>total+=state.chapters[num].flashcards.length);
+  document.getElementById('fs-card-count').textContent=
+    state.fsSelected.size?`${total} cards from ${state.fsSelected.size} chapter(s) selected`:'No chapters selected';
+}
+function fsSelectAll(){
+  CHAPTERS.forEach(ch=>{if(state.chapters[ch.num].flashcards.length)state.fsSelected.add(ch.num);});
+  renderFlashcardsPage();
+}
+function fsClearAll(){state.fsSelected.clear();renderFlashcardsPage();}
+
+// ── Fullscreen session ──
+function startFullscreen(){
+  const cards=[];
+  state.fsSelected.forEach(num=>{
+    state.chapters[num].flashcards.forEach(c=>cards.push({...c,chNum:num}));
+  });
+  if(!cards.length){alert('No flashcards in selected chapters!');return;}
+  // shuffle
+  for(let i=cards.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[cards[i],cards[j]]=[cards[j],cards[i]];}
+  state.fsCards=cards;
+  state.fsIndex=0;
+  document.getElementById('fsOverlay').classList.remove('hidden');
+  document.body.style.overflow='hidden';
+  fsRender();
+}
+
+function fsRender(){
+  const cards=state.fsCards;
+  const idx=state.fsIndex;
+  if(!cards.length)return;
+  const c=cards[idx];
+  document.getElementById('fsCard').classList.remove('flipped');
+  document.getElementById('fs-front').textContent=c.term;
+  document.getElementById('fs-back').textContent=c.def;
+  document.getElementById('fs-counter').textContent=`${idx+1} / ${cards.length}`;
+  document.getElementById('fs-card-ch').textContent=`Ch. ${c.chNum}`;
+  document.getElementById('fs-bar').style.width=((idx+1)/cards.length*100)+'%';
+  document.getElementById('fs-session-title').textContent=`Study Session — ${cards.length} cards`;
+}
+function fsFlip(){document.getElementById('fsCard').classList.toggle('flipped');}
+function fsNext(){if(state.fsIndex<state.fsCards.length-1){state.fsIndex++;fsRender();}}
+function fsPrev(){if(state.fsIndex>0){state.fsIndex--;fsRender();}}
+function closeFullscreen(){
+  document.getElementById('fsOverlay').classList.add('hidden');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{
+  if(document.getElementById('fsOverlay').classList.contains('hidden'))return;
+  if(e.key===' '||e.key==='Enter'){e.preventDefault();fsFlip();}
+  if(e.key==='ArrowRight'||e.key==='ArrowDown')fsNext();
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp')fsPrev();
+  if(e.key==='Escape')closeFullscreen();
+});
+
+// ════════════════════════════════════════════════════════════
+// MY NOTES PAGE
+// ════════════════════════════════════════════════════════════
+let notesFilter='all';
+function filterNotes(f){
+  notesFilter=f;
+  document.querySelectorAll('#page-notes .btn').forEach(b=>{
+    b.style.borderColor=b.textContent.toLowerCase().includes(f)||f==='all'&&b.textContent==='All'?'var(--sage-5)':'transparent';
+  });
+  renderNotesPage();
+}
+function renderNotesPage(){
+  const grid=document.getElementById('notesGrid');
+  const empty=document.getElementById('notes-empty');
+  grid.innerHTML='';
+  let count=0;
+  CHAPTERS.forEach(ch=>{
+    const s=state.chapters[ch.num];
+    const items=[];
+    if((notesFilter==='all'||notesFilter==='pdf')&&s.notesLink)
+      items.push({type:'pdf',label:'Chapter Notes',content:'Google Drive link saved',link:s.notesLink});
+    if((notesFilter==='all'||notesFilter==='pdf')&&s.handwrittenLink)
+      items.push({type:'pdf',label:'Handwritten Notes',content:'Google Drive link saved',link:s.handwrittenLink});
+    if((notesFilter==='all'||notesFilter==='summary')&&s.summary)
+      items.push({type:'summary',label:'My Summary',content:s.summary});
+    if((notesFilter==='all'||notesFilter==='source')&&s.sourceNotes)
+      items.push({type:'source',label:'Primary Source Notes',content:s.sourceNotes});
+    items.forEach(item=>{
+      count++;
+      const card=document.createElement('div');
+      card.className='note-card';
+      card.innerHTML=`
+        <div class="note-card-header">
+          <div class="note-card-num">${ch.num}</div>
+          <div class="note-card-title">${ch.title}</div>
+        </div>
+        <div class="note-card-body">
+          <span class="note-type-badge ${item.type}">${item.label}</span>
+          <div class="note-card-preview">${escH(item.content)}</div>
+          <div class="note-actions">
+            <button class="btn" style="font-size:.75rem;padding:.3rem .65rem;" onclick="openDrawer(${ch.num})">Open Chapter</button>
+            ${item.link?`<a href="${escH(item.link)}" target="_blank" class="btn secondary" style="font-size:.75rem;padding:.3rem .65rem;">Open in Drive</a>`:''}
+          </div>
+        </div>`;
+      grid.appendChild(card);
+    });
+  });
+  empty.style.display=count?'none':'block';
+}
+
+// ════════════════════════════════════════════════════════════
+// EXAM PREP
+// ════════════════════════════════════════════════════════════
+function switchExam(id,btn){
+  document.querySelectorAll('.exam-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.exam-toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('exam-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function renderEssayLists(){
+  ['midterm','final'].forEach(exam=>{
+    const list=document.getElementById('essay-list-'+exam);
+    list.innerHTML=(state.essays[exam]||[]).map((q,i)=>`
+      <div class="essay-q">
+        <div class="essay-q-num">${i+1}</div>
+        <div class="essay-q-text">${escH(q)}</div>
+        <button class="essay-q-del" onclick="deleteEssayQ('${exam}',${i})">✕</button>
+      </div>`).join('')||'<p style="color:var(--muted);font-size:.85rem;padding:.5rem 0;">No questions added yet.</p>';
+  });
+}
+function addEssayQ(exam){
+  const input=document.getElementById('essay-input-'+exam);
+  const q=input.value.trim(); if(!q)return;
+  state.essays[exam].push(q);
+  input.value='';
+  saveState(); renderEssayLists();
+}
+function deleteEssayQ(exam,i){
+  state.essays[exam].splice(i,1);
+  saveState(); renderEssayLists();
+}
+
+function renderTimeline(){
+  const list=document.getElementById('timeline-list');
+  list.innerHTML=state.timeline.map((item,i)=>`
+    <div class="timeline-item">
+      <div class="timeline-date">${escH(item.date)}</div>
+      <div class="timeline-content">${escH(item.event)}</div>
+      <button style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:.8rem;" onclick="deleteTimelineEvent(${i})">✕</button>
+    </div>`).join('');
+}
+function addTimelineEvent(){
+  const d=document.getElementById('timeline-date-input').value.trim();
+  const e=document.getElementById('timeline-event-input').value.trim();
+  if(!d||!e)return;
+  state.timeline.push({date:d,event:e});
+  document.getElementById('timeline-date-input').value='';
+  document.getElementById('timeline-event-input').value='';
+  saveState(); renderTimeline();
+}
+function deleteTimelineEvent(i){
+  state.timeline.splice(i,1);
+  saveState(); renderTimeline();
+}
+
+// ════════════════════════════════════════════════════════════
+// PROGRESS PAGE
+// ════════════════════════════════════════════════════════════
+function renderProgressPage(){
+  let totalDone=0,totalPossible=0;
+  const taskKeys=['read','notes','flash','quiz','audio'];
+  const taskLabels={read:'📖 Read',notes:'📄 Notes',flash:'🃏 Cards',quiz:'📝 Quiz',audio:'🎧 Audio'};
+
+  CHAPTERS.forEach(ch=>{
+    const s=state.chapters[ch.num];
+    taskKeys.forEach(k=>{
+      totalPossible++;
+      if(s.progress[k])totalDone++;
+    });
+  });
+
+  const pct=Math.round(totalDone/totalPossible*100)||0;
+  document.getElementById('overall-bar').style.width=pct+'%';
+  document.getElementById('overall-pct').textContent=`${totalDone} / ${totalPossible} tasks (${pct}%)`;
+
+  // Stats
+  const ps=document.getElementById('progress-stats');
+  const chDone=CHAPTERS.filter(ch=>taskKeys.every(k=>state.chapters[ch.num].progress[k])).length;
+  const flashTotal=CHAPTERS.reduce((a,ch)=>a+state.chapters[ch.num].flashcards.length,0);
+  const notesCount=CHAPTERS.filter(ch=>state.chapters[ch.num].notesName||state.chapters[ch.num].summary).length;
+  ps.innerHTML=`
+    <div class="stat-card"><div class="stat-num">${pct}%</div><div class="stat-label">Overall Complete</div></div>
+    <div class="stat-card"><div class="stat-num">${chDone}/17</div><div class="stat-label">Chapters Done</div></div>
+    <div class="stat-card"><div class="stat-num">${flashTotal}</div><div class="stat-label">Total Flashcards</div></div>
+    <div class="stat-card"><div class="stat-num">${notesCount}</div><div class="stat-label">Chapters with Notes</div></div>`;
+
+  // Weeks
+  const weeksEl=document.getElementById('progressWeeks');
+  weeksEl.innerHTML='';
+  WEEKS.forEach(w=>{
+    const sec=document.createElement('div');
+    sec.className='progress-week';
+    const weekDone=w.chs.reduce((a,n)=>a+taskKeys.filter(k=>state.chapters[n].progress[k]).length,0);
+    const weekTotal=w.chs.length*taskKeys.length;
+    const weekPct=Math.round(weekDone/weekTotal*100)||0;
+    sec.innerHTML=`
+      <h3>📅 ${w.label} — ${w.topic} <span style="font-size:.78rem;color:var(--muted);font-weight:400;margin-left:.5rem;">${weekPct}%</span></h3>
+      ${w.chs.map(num=>{
+        const ch=CHAPTERS.find(c=>c.num===num);
+        const s=state.chapters[num];
+        return `<div class="progress-chapter-row">
+          <div class="pch-num">${num}</div>
+          <div class="pch-title">${ch.title}</div>
+          <div class="progress-checks">
+            ${taskKeys.map(k=>`
+              <div class="pcheck${s.progress[k]?' done':''}" onclick="toggleProgress(${num},'${k}',${!s.progress[k]});renderProgressPage();">
+                ${taskLabels[k].split(' ')[0]}
+                <div class="pcheck-label">${taskLabels[k].split(' ')[1]}</div>
+              </div>`).join('')}
+          </div>
+        </div>`;
+      }).join('')}`;
+    weeksEl.appendChild(sec);
+  });
+}
+
+// ════════════════════════════════════════════════════════════
+// CHECKBOX (exam prep)
+// ════════════════════════════════════════════════════════════
+function saveCheckbox(id,val){
+  state.checkboxes[id]=val;
+  saveState();
+}
+function restoreCheckboxes(){
+  Object.entries(state.checkboxes).forEach(([id,val])=>{
+    const el=document.getElementById(id);
+    if(el)el.checked=val;
+  });
+}
+
+// ════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════
+renderHome();
+renderChapters();
+renderEssayLists();
+renderTimeline();
+restoreCheckboxes();
+</script>
+</body>
+</html>
